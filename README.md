@@ -12,7 +12,7 @@ Improve load performance by inlining and optimising remote assets loaded through
 If you have a directory of HTML files at `dist` you can purge/inline the CSS and inline JavaScript CDN includes less than 20kb with:
 
 ```sh
-npx inline-remote-assets dist/*.html
+npx inline-remote-assets 'dist/**/*.html'
 ```
 
 Example input HTML file:
