@@ -1,0 +1,8 @@
+tests
+fixtures
+dist
+.editorconfig
+.inline-remote-asset-cache
+.remote-asset-cache
+.github
+.dependabot

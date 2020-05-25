@@ -1,17 +1,24 @@
 {
-  "name": "jsdoc-type-d-ts-node-pkg",
-  "description": "Example repo for a Node.js module with TypeScript typings (types.d.ts) generated from JSDoc annotations",
+  "name": "inline-remote-assets",
+  "version": "0.0.1",
+  "description": "Improve load performance by inlining and optimising remote assets loaded through CDN",
   "main": "src/main.js",
   "types": "./types.d.ts",
+  "bin": "./src/cli.js",
   "scripts": {
     "test": "ava",
     "build": "jsdoc -t node_modules/tsd-jsdoc/dist -r src -d .",
     "lint": "xo src tests",
-    "format": "xo src tests --fix"
+    "format": "xo src tests --fix",
+    "fmt": "yarn format",
+    "example": "rm -rf dist && cp -r fixtures dist && src/cli.js 'dist/*.html'",
+    "release": "np release",
+    "prepack": "yarn build"
   },
   "devDependencies": {
     "ava": "^3.8.2",
     "jsdoc": "^3.6.4",
+    "np": "^6.2.3",
     "tsd-jsdoc": "^2.5.0",
     "xo": "^0.30.0"
   },
@@ -20,5 +27,11 @@
     "space": true,
     "globals": []
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "meow": "^7.0.1",
+    "node-fetch": "^2.6.0",
+    "purgecss": "^2.2.1",
+    "tiny-glob": "^0.2.6"
+  }
 }

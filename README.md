@@ -1,34 +1,14 @@
-![test](https://github.com/HugoDF/jsdoc-type-d-ts-node-pkg/workflows/test/badge.svg)
+![test](https://github.com/shatstack/inline-remote-assets/workflows/test/badge.svg)
 
-# Node.js module with TypeScript typings (types.d.ts) generated from JSDoc
+# Inline remote assets
 
-Example repo for a Node.js module with TypeScript typings ([./types.d.ts](./types.d.ts)) generated from JSDoc annotations.
+Improve load performance by inlining and optimising remote assets loaded through CDN.
 
-Project setup, files/directories of interest are [./src/main.js](./src/main.js), [./tests](./tests) and [./types.d.ts](./types.d.ts).
-
-```
-├── LICENSE
-├── README.md
-├── node_modules
-│   └── ...
-├── package.json
-├── src
-│   └── main.js
-├── tests
-│   └── ping.js
-├── types.d.ts
-└── yarn.lock
-```
-
-Comes ready to develop with: 
-
-- [ava](https://avajs.dev) for testing
-- [jsdoc](https://github.com/jsdoc/jsdoc) and [tsd-jsdoc](https://github.com/englercj/tsd-jsdoc) to generate the [./types.d.ts](./types.d.ts) file.
-- [xo](https://github.com/xojs/xo#readme) for linting/formatting
+Opinionated CSS & JS inline/purging.
 
 ## Quickstart
 
-Use the GitHub "Template" functionality or clone the repo (take care to remove the `.git` folder in that case).
+TODO
 
 # Contributing
 
