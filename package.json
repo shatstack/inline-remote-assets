@@ -12,8 +12,8 @@
     "format": "xo src tests --fix",
     "fmt": "yarn format",
     "example": "rm -rf dist && cp -r fixtures dist && src/cli.js 'dist/*.html'",
-    "release": "np release",
-    "prepack": "yarn build"
+    "prepack": "yarn build",
+    "release": "np"
   },
   "devDependencies": {
     "ava": "^3.8.2",
