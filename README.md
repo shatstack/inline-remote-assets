@@ -79,7 +79,23 @@ Example output HTML file (after `npx inline-remote-assets dist/*.html`). We've s
 ```
 
 
-<!-- ## Installation -->
+## Installation
+
+You can run the script using `npx`:
+
+```sh
+npx inline-remote-assets 'dist/**/*.html'
+```
+
+You can also install it globally:
+
+```sh
+npm install -g inline-remote-assets
+# or using Yarn
+yarn global add inline-remote-assets
+```
+
+It's now runnable as `inline-remote-assets`.
 
 ## Options
 
