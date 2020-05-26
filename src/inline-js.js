@@ -35,10 +35,7 @@ async function inlineJs(html, options) {
     scriptUrls.map(async (url) => {
       return {
         url,
-        asset: await loadRemoteAsset(url, {
-          cachePath: '.remote-asset-cache',
-          noCache: false
-        })
+        asset: await loadRemoteAsset(url)
       };
     })
   );
