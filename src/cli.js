@@ -16,6 +16,7 @@ const cli = meow(
   Examples
     $ inline-remote-assets dist/**/*.html
     $ inline-remote-assets dist/**/*.html --max-size 75000
+    $ inline-remote-assets dist/**/*.html --output public
   `,
   {
     flags: {
