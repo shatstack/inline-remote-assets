@@ -10,15 +10,12 @@ const sampleHtml = `<link
 />`;
 
 test.before(async () => {
-  await ensureWriteablePath('dist/test/index.html');
-});
-test.after(async () => {
-  await fs.rmdir('dist/test', {recursive: true});
+  await ensureWriteablePath('dist/index.html');
 });
 
 test('works with different output directory', async (t) => {
-  const dir = await fs.mkdtemp('dist/test/origin-dir');
-  const outDir = await fs.mkdtemp('dist/test/output-dir');
+  const dir = await fs.mkdtemp('dist/origin-dir');
+  const outDir = await fs.mkdtemp('dist/output-dir');
   await fs.writeFile(path.join(dir, 'test.html'), sampleHtml, 'utf8');
   await main(`${dir}/*.html`, {maxSize: 20000, output: outDir});
   const original = await fs.readFile(path.join(dir, 'test.html'), 'utf8');
@@ -32,7 +29,7 @@ test('works with different output directory', async (t) => {
 });
 
 test('works when writing in-place', async (t) => {
-  const dir = await fs.mkdtemp('dist/test/in-place');
+  const dir = await fs.mkdtemp('dist/in-place');
 
   await fs.writeFile(path.join(dir, 'test.html'), sampleHtml, 'utf8');
   await main(`${dir}/*.html`, {maxSize: 20000});
