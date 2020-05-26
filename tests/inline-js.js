@@ -16,7 +16,7 @@ test('inlines modules smaller than passed "maxSize" option', async (t) => {
   );
 });
 
-test('keeps CDN tag for modules larger than "max" option', async (t) => {
+test('keeps CDN tag for modules larger than "maxSize" option', async (t) => {
   t.is(await inlineJs(remoteInclude, {maxSize: 10}), remoteInclude);
 });
 
