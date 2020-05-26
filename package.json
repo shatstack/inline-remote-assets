@@ -11,6 +11,7 @@
     "lint": "xo src tests",
     "format": "xo src tests --fix",
     "fmt": "yarn format",
+    "example:uncached": "rm -rf .remote-asset-cache && yarn example",
     "example": "rm -rf dist && src/cli.js 'fixtures/*.html' -o dist",
     "prepack": "yarn build",
     "release": "np"
