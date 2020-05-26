@@ -1,4 +1,3 @@
-// @ts-check
 /**
  * Inline Remote Assets
  * @module inline-remote-assets/main
@@ -17,8 +16,8 @@ module.exports = {
    *
    * @param {string} globPattern
    * @param {object} options
+   * @param {number} options.maxSize - Maximum size of asset to be inlined (in bytes)
    * @param {string} [options.output]
-   * @param {number} options.max - Maximum size of asset to be inlined (in bytes)
    * @returns {Promise<void>}
    */
   async main(globPattern, options) {
@@ -35,7 +34,7 @@ module.exports = {
             .then((html) => inlineCss(html, options))
             .then((html) => inlineJs(html, options));
           // @todo support custom output path
-          const outputPath = path;
+          const outputPath = options.output ? path : path;
           // Write back to file
           await fs.writeFile(outputPath, newHtml, 'utf8');
           console.timeEnd(path);

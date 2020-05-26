@@ -3,20 +3,23 @@ declare function matchRemoteHref(tag: string): string | null;
 /**
  * Inline & purge CSS rules from CDN/remote includes into HTML
  * @param html - HTML document string into which to inline remote asset
- * @param _ - inline-remote-asset options
+ * @param _.maxSize - Maximum size of asset to be inlined (in bytes)
  */
-declare function inlineCss(html: string, _: any): Promise<string>;
+declare function inlineCss(html: string, _?: {
+    maxSize: number;
+    output?: string;
+}): Promise<string>;
 
 declare function matchRemoteSrc(tag: string): string | null;
 
 /**
  * Inline JavaScript loaded from CDN/remote into HTML script directly
  * @param html - HTML document string
- * @param options - inline-remote-assets options
- * @param options.max - Maximum size of asset to be inlined (in bytes)
+ * @param options.maxSize - Maximum size of asset to be inlined (in bytes)
  */
 declare function inlineJs(html: string, options: {
-    max: number;
+    maxSize: number;
+    output?: string;
 }): Promise<string>;
 
 declare const cache: {
@@ -40,11 +43,11 @@ declare function loadRemoteAsset(url: string, options: {
  */
 declare module "inline-remote-assets/main" {
     /**
-     * @param options.max - Maximum size of asset to be inlined (in bytes)
+     * @param options.maxSize - Maximum size of asset to be inlined (in bytes)
      */
     function main(globPattern: string, options: {
+        maxSize: number;
         output?: string;
-        max: number;
     }): Promise<void>;
 }
 

@@ -1,4 +1,3 @@
-// @ts-check
 const loadRemoteAsset = require('./load-remote-asset');
 const {matchRemoteResource} = require('./utils');
 
@@ -16,8 +15,9 @@ function matchRemoteSrc(tag) {
 /**
  * Inline JavaScript loaded from CDN/remote into HTML script directly
  * @param {string} html - HTML document string
- * @param {object} options - inline-remote-assets options
- * @param {number} options.max - Maximum size of asset to be inlined (in bytes)
+ * @param {object} options
+ * @param {number} options.maxSize - Maximum size of asset to be inlined (in bytes)
+ * @param {string} [options.output]
  * @returns {Promise<string>}
  */
 
@@ -56,7 +56,7 @@ async function inlineJs(html, options) {
     }
 
     const asset = urlToAsset[src];
-    if (asset.size > options.max) {
+    if (asset.size > options.maxSize) {
       return scriptTag;
     }
 

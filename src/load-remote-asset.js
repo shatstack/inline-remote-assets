@@ -1,4 +1,3 @@
-// @ts-check
 const fs = require('fs').promises;
 const fetch = require('node-fetch');
 
