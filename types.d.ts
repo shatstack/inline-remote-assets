@@ -1,4 +1,11 @@
+declare const cache: {
+    set: (...params: any[]) => any;
+    get: (...params: any[]) => any;
+};
+
 declare function matchRemoteHref(tag: string): string | null;
+
+declare function purgeStyles(html: string, styleSheetContents: { url: string; asset: { value: string; size: number; }; }[]): Promise<{ url: string; asset: { value: string; size: number; }; }[]>;
 
 /**
  * Inline & purge CSS rules from CDN/remote includes into HTML
@@ -17,21 +24,11 @@ declare function inlineJs(html: string, options: {
     maxSize: number;
 }): Promise<string>;
 
-declare const cache: {
-    set: (...params: any[]) => any;
-    get: (...params: any[]) => any;
-};
-
 /**
  * Load & cache (to fs) remote stylesheets
  * @param url - Stylesheet URL to load
- * @param options.noCache - Whether to use existing cache
- * @param options.cachePath - Where to store the cache
  */
-declare function loadRemoteAsset(url: string, options: {
-    noCache: boolean;
-    cachePath: string;
-}): Promise<{ size: number; value: string; }>;
+declare function loadRemoteAsset(url: string): Promise<{ size: number; value: string; }>;
 
 /**
  * Inline Remote Assets
@@ -47,6 +44,11 @@ declare module "inline-remote-assets/main" {
 }
 
 declare function matchRemoteResource(tag: string, resourceLocationRegex: RegExp): string | null;
+
+/**
+ * @param string - string to digest
+ */
+declare function digest(string: string): string;
 
 /**
  * @param p - Path to check
