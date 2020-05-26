@@ -18,8 +18,6 @@ function matchRemoteHref(tag) {
  * Inline & purge CSS rules from CDN/remote includes into HTML
  * @param {string} html - HTML document string into which to inline remote asset
  * @param {object} [_]
- * @param {number} _.maxSize - Maximum size of asset to be inlined (in bytes)
- * @param {string} [_.output]
  * @returns {Promise<string>}
  */
 

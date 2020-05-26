@@ -5,9 +5,11 @@
 'use strict';
 const inlineCss = require('./inline-css');
 const inlineJs = require('./inline-js');
+const {ensureWriteablePath} = require('./utils');
 // Required only for main()
 const glob = require('tiny-glob');
 const fs = require('fs').promises;
+const path = require('path');
 
 module.exports = {
   inlineCss,
@@ -24,22 +26,30 @@ module.exports = {
     // @todo add warning that `./dist/*.html` doesn't work?
     const paths = await glob(globPattern);
     await Promise.all(
-      paths.map(async (path) => {
+      paths.map(async (inputPath) => {
         try {
-          console.time(path);
+          let outputPath = inputPath;
+          let timerName = inputPath;
+          if (options.output) {
+            outputPath = path.join(options.output, path.basename(inputPath));
+            timerName = `${inputPath} -> ${outputPath}`;
+          }
+
+          console.time(timerName);
           // Read file
-          const initialHtml = await fs.readFile(path, 'utf8');
-          // Run transform
+          const initialHtml = await fs.readFile(inputPath, 'utf8');
+          // Run transforms
           const newHtml = await Promise.resolve(initialHtml)
             .then((html) => inlineCss(html, options))
             .then((html) => inlineJs(html, options));
-          // @todo support custom output path
-          const outputPath = options.output ? path : path;
+
+          // Create directories if necessary, useful when output is defined
+          await ensureWriteablePath(outputPath);
           // Write back to file
           await fs.writeFile(outputPath, newHtml, 'utf8');
-          console.timeEnd(path);
+          console.timeEnd(timerName);
         } catch (error) {
-          console.error(`${path}: ${error.stack}`);
+          console.error(`${inputPath}: ${error.stack}`);
         }
       })
     );

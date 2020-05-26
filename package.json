@@ -11,7 +11,7 @@
     "lint": "xo src tests",
     "format": "xo src tests --fix",
     "fmt": "yarn format",
-    "example": "rm -rf dist && cp -r fixtures dist && src/cli.js 'dist/*.html'",
+    "example": "rm -rf dist && src/cli.js 'fixtures/*.html' -o dist",
     "prepack": "yarn build",
     "release": "np"
   },
