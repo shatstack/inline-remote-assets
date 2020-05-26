@@ -1,6 +1,7 @@
 const PurgeCSS = require('purgecss').default;
 const loadRemoteAsset = require('./load-remote-asset');
-const {matchRemoteResource} = require('./utils');
+const {matchRemoteResource, digest} = require('./utils');
+const cache = require('./cache');
 
 const styleLinkRegex = /<link[^>]*rel="stylesheet"[^>]*>/gm;
 const extractHrefRegex = /(?<=href=").*(?=")/gm;
@@ -12,6 +13,77 @@ const extractHrefRegex = /(?<=href=").*(?=")/gm;
  */
 function matchRemoteHref(tag) {
   return matchRemoteResource(tag, extractHrefRegex);
+}
+
+/**
+ *
+ * @param {string} html
+ * @param {Array<{ url: string, asset: { value: string, size: number } }>} styleSheetContents
+ * @returns {Promise<Array<{ url: string, asset: { value: string, size: number } }>>}
+ */
+async function purgeStyles(html, styleSheetContents) {
+  const htmlDigest = digest(html);
+
+  const cachedPurgedAssets = [];
+  const assetsToPurge = [];
+
+  // Get cached assets
+  for await (const {url, asset} of styleSheetContents) {
+    const cached = await cache.get(`${htmlDigest}${digest(url)}`);
+    if (cached) {
+      cachedPurgedAssets.push({
+        url,
+        asset: cached
+      });
+    } else {
+      assetsToPurge.push({url, asset});
+    }
+  }
+
+  // Purge remaining assets
+  const purgedStyles = await new PurgeCSS().purge({
+    defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
+    content: [
+      {
+        raw: html,
+        extension: 'html'
+      }
+    ],
+    css: assetsToPurge.map(({asset}) => ({
+      raw: asset.value,
+      extension: 'css'
+    }))
+  });
+
+  // Shape the purgedStyles
+  let purgedAssets = purgedStyles.map(({css}, i) => {
+    return {
+      url: assetsToPurge[i].url,
+      asset: {
+        value: css,
+        size: 0
+      }
+    };
+  });
+
+  // Go through again to cache our output & populate `size`.
+  purgedAssets = await Promise.all(
+    purgedAssets.map(async ({url, asset}) => {
+      const {size} = await cache.set(
+        `${htmlDigest}${digest(url)}`,
+        asset.value
+      );
+      return {
+        url,
+        asset: {
+          ...asset,
+          size
+        }
+      };
+    })
+  );
+
+  return [...cachedPurgedAssets, ...purgedAssets];
 }
 
 /**
@@ -37,33 +109,17 @@ async function inlineCss(html, _) {
     styleSheetUrls.map(async (url) => {
       return {
         url,
-        asset: await loadRemoteAsset(url, {
-          cachePath: '.remote-asset-cache',
-          noCache: false
-        })
+        asset: await loadRemoteAsset(url)
       };
     })
   );
 
   // @todo cache Purge output using `styleSheets.url` + HTML content
-  const purgeResult = await new PurgeCSS().purge({
-    defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
-    content: [
-      {
-        raw: html,
-        extension: 'html'
-      }
-    ],
-    css: styleSheetContents.map(({asset}) => ({
-      raw: asset.value,
-      extension: 'css'
-    }))
-  });
+  const purgedAssets = await purgeStyles(html, styleSheetContents);
 
   // 4. create a "url" -> purgedCSS map
-  const urlToCss = purgeResult.reduce((acc, {css}, i) => {
-    const styleSheetUrl = styleSheetUrls[i];
-    acc[styleSheetUrl] = css;
+  const urlToCss = purgedAssets.reduce((acc, {url, asset}) => {
+    acc[url] = asset;
     return acc;
   }, {});
 
@@ -76,8 +132,8 @@ async function inlineCss(html, _) {
       return linkTag;
     }
 
-    const css = urlToCss[href];
-    return `<style>${css}</style>`;
+    const asset = urlToCss[href];
+    return `<style>${asset.value}</style>`;
   });
 }
 
