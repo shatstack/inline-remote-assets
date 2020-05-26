@@ -1,5 +1,9 @@
-const test = require('ava');
+const test = require('ava').default;
 const {inlineCss} = require('../src/main');
+
+const defaultOptions = {
+  maxSize: 20000
+};
 
 const sampleCssInclude = `<link
   href="https://cdn.jsdelivr.net/npm/tailwindcss@1.x.x/dist/tailwind.min.css"
@@ -7,7 +11,7 @@ const sampleCssInclude = `<link
 />`;
 
 test('replaces <link href=""> with <style>Purged styles</style>', async (t) => {
-  const output = await inlineCss(sampleCssInclude);
+  const output = await inlineCss(sampleCssInclude, defaultOptions);
   t.false(
     output.includes(
       'href="https://cdn.jsdelivr.net/npm/tailwindcss@1.x.x/dist/tailwind.min.css"'
@@ -31,7 +35,7 @@ const sampleTailwindUsage = `${sampleCssInclude}
 </body>`;
 
 test('Keeps used Tailwind classes', async (t) => {
-  const output = await inlineCss(sampleTailwindUsage);
+  const output = await inlineCss(sampleTailwindUsage, defaultOptions);
   const outputHead = output.split('<body')[0];
   t.is(
     outputHead.trim(),
@@ -42,11 +46,11 @@ test('Keeps used Tailwind classes', async (t) => {
 const relativeStyleSheet = `<link rel="stylesheet" href="./relative.css" />`;
 
 test('Keeps relative stylesheet includes', async (t) => {
-  t.is(await inlineCss(relativeStyleSheet), relativeStyleSheet);
+  t.is(await inlineCss(relativeStyleSheet, defaultOptions), relativeStyleSheet);
 });
 
 const styleSheetNoHref = `<link rel="stylesheet" />`;
 
 test('Keeps dodgy stylesheets', async (t) => {
-  t.is(await inlineCss(styleSheetNoHref), styleSheetNoHref);
+  t.is(await inlineCss(styleSheetNoHref, defaultOptions), styleSheetNoHref);
 });

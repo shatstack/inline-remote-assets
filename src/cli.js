@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-// @ts-check
 'use strict';
 const meow = require('meow');
 const {main} = require('./main');
@@ -11,10 +10,11 @@ const cli = meow(
     $ inline-remote-assets <glob-pattern>
 
   Options
-    --max Maximum size of asset to be inlined (in bytes), default 20kb
+    --max-size, -m Maximum size of asset to be inlined (in bytes), default 20000 (20kb)
 
-    Examples
+  Examples
     $ inline-remote-assets dist/**/*.html
+    $ inline-remote-assets dist/**/*.html --max-size 75000
   `,
   // @todo: add support
   // --output, -o Define a different output directory (defaults to overwriting files)
@@ -24,9 +24,10 @@ const cli = meow(
       //   type: 'string',
       //   alias: 'o'
       // },
-      max: {
+      maxSize: {
         type: 'number',
-        default: 20000 // 20kb
+        default: 20000, // 20kb
+        alias: 'm'
       }
     }
   }
