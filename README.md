@@ -78,6 +78,36 @@ Example output HTML file (after `npx inline-remote-assets dist/*.html`). We've s
 </html>
 ```
 
+
+<!-- ## Installation -->
+
+## Options
+
+### --output, -o
+
+`--output` or `-o` can be used to define a different output directory, default is to write files in place (overwrite).
+
+Example to output the matched `dist` files to `public`:
+
+```sh
+inline-remote-assets 'dist/**/*.html' --output public
+
+dist/sample.html -> public/sample.html: 1141.294ms
+```
+
+### --max-size, -m
+
+`--max-size` or `-m` can be used to define  the maximum size of JavaScript assets to be inlined (in bytes), default 20000 (20kb).
+
+Example to set the max-size of JS files to inline to 75kb:
+
+```sh
+inline-remote-assets 'dist/**/*.html' --max-size 75000
+
+dist/sample.html: 953.339ms
+```
+
+
 # Contributing
 
 ## Requirements
