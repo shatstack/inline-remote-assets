@@ -6,7 +6,6 @@
 const inlineCss = require('./inline-css');
 const inlineJs = require('./inline-js');
 const {ensureWriteablePath} = require('./utils');
-// Required only for main()
 const glob = require('tiny-glob');
 const fs = require('fs').promises;
 const path = require('path');
@@ -20,10 +19,16 @@ module.exports = {
    * @param {object} options
    * @param {number} options.maxSize - Maximum size of asset to be inlined (in bytes)
    * @param {string} [options.output]
+   * @param {number} [options.cssMaxSize]
    * @returns {Promise<void>}
    */
   async main(globPattern, options) {
-    // @todo add warning that `./dist/*.html` doesn't work?
+    if (globPattern.startsWith('.')) {
+      console.warn(
+        `[inline-remote-assets]: Pattern "${globPattern}", starts with "." which might not work as expected, try without "."`
+      );
+    }
+
     const paths = await glob(globPattern);
     await Promise.all(
       paths.map(async (inputPath) => {

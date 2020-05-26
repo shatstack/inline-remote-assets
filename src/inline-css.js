@@ -1,6 +1,6 @@
 const PurgeCSS = require('purgecss').default;
 const loadRemoteAsset = require('./load-remote-asset');
-const {matchRemoteResource, digest} = require('./utils');
+const {matchRemoteResource, digest, urlsToAssets} = require('./utils');
 const cache = require('./cache');
 
 const styleLinkRegex = /<link[^>]*rel="stylesheet"[^>]*>/gm;
@@ -92,11 +92,14 @@ async function purgeStyles(html, styleSheetContents) {
 /**
  * Inline & purge CSS rules from CDN/remote includes into HTML
  * @param {string} html - HTML document string into which to inline remote asset
- * @param {object} [_]
+ * @param {object} options
+ * @param {number} [options.maxSize]
+ * @param {number} [options.cssMaxSize]
  * @returns {Promise<string>}
  */
 
-async function inlineCss(html, _) {
+async function inlineCss(html, options) {
+  const maxSize = options.cssMaxSize || options.maxSize || 20000;
   const linkTags = html.match(styleLinkRegex);
 
   if (!linkTags || linkTags.length === 0) {
@@ -117,25 +120,21 @@ async function inlineCss(html, _) {
     })
   );
 
-  // @todo cache Purge output using `styleSheets.url` + HTML content
   const purgedAssets = await purgeStyles(html, styleSheetContents);
 
-  // 4. create a "url" -> purgedCSS map
-  const urlToCss = purgedAssets.reduce((acc, {url, asset}) => {
-    acc[url] = asset;
-    return acc;
-  }, {});
+  const urlToAsset = urlsToAssets(purgedAssets);
 
-  // 5. replace <link> tags with correct CSS in <style> tags
   return html.replace(styleLinkRegex, (linkTag) => {
-    // 5.1. find relevant CSS based on linkTag.match(extractHrefRegex)
-    // & url -> CSS map
     const href = matchRemoteHref(linkTag);
     if (!href) {
       return linkTag;
     }
 
-    const asset = urlToCss[href];
+    const asset = urlToAsset[href];
+    if (asset.size > maxSize) {
+      return linkTag;
+    }
+
     return `<style>${asset.value}</style>`;
   });
 }

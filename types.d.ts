@@ -11,7 +11,10 @@ declare function purgeStyles(html: string, styleSheetContents: { url: string; as
  * Inline & purge CSS rules from CDN/remote includes into HTML
  * @param html - HTML document string into which to inline remote asset
  */
-declare function inlineCss(html: string, _?: any): Promise<string>;
+declare function inlineCss(html: string, options: {
+    maxSize?: number;
+    cssMaxSize?: number;
+}): Promise<string>;
 
 declare function matchRemoteSrc(tag: string): string | null;
 
@@ -40,6 +43,7 @@ declare module "inline-remote-assets/main" {
     function main(globPattern: string, options: {
         maxSize: number;
         output?: string;
+        cssMaxSize?: number;
     }): Promise<void>;
 }
 
@@ -56,4 +60,6 @@ declare function digest(string: string): string;
 declare function isPathWriteable(p: string): void;
 
 declare function ensureWriteablePath(filePath: string): Promise<void>;
+
+declare function urlsToAssets(urlsWithAssets: { url: string; asset: object; }[]): Record<string, object>;
 

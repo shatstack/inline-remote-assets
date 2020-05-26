@@ -1,5 +1,5 @@
 const loadRemoteAsset = require('./load-remote-asset');
-const {matchRemoteResource} = require('./utils');
+const {matchRemoteResource, urlsToAssets} = require('./utils');
 
 const scriptRegex = /<script[^>]*>/gm;
 const extractSrcRegex = /(?<=src=").*(?=")/gm;
@@ -40,10 +40,7 @@ async function inlineJs(html, options) {
     })
   );
 
-  const urlToAsset = assets.reduce((acc, {url, asset}) => {
-    acc[url] = asset;
-    return acc;
-  }, {});
+  const urlToAsset = urlsToAssets(assets);
 
   return html.replace(scriptRegex, (scriptTag) => {
     const src = matchRemoteSrc(scriptTag);

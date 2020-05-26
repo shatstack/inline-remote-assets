@@ -97,7 +97,7 @@ dist/sample.html -> public/sample.html: 1141.294ms
 
 ### --max-size, -m
 
-`--max-size` or `-m` can be used to define  the maximum size of JavaScript assets to be inlined (in bytes), default 20000 (20kb).
+`--max-size` or `-m` can be used to define the maximum size of JavaScript/CSS assets to be inlined (in bytes), default 20000 (20kb).
 
 Example to set the max-size of JS files to inline to 75kb:
 
@@ -107,6 +107,15 @@ inline-remote-assets 'dist/**/*.html' --max-size 75000
 dist/sample.html: 953.339ms
 ```
 
+### --css-max-size
+
+`--css-max-size` can be used to define the maximum size of CSS assets to be inlined (in bytes), it **supercedes** `maxSize` when set, defaults to the value of maxSize or 20000 (20kb).
+
+```sh
+$ inline-remote-assets 'dist/**/*.html' --max-size 75000 --css-max-size 100000
+
+dist/sample.html: 17.221ms
+```
 
 # Contributing
 

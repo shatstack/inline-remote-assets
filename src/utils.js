@@ -45,8 +45,20 @@ async function ensureWriteablePath(filePath) {
   }
 }
 
+/**
+ * @param {Array<{ url: string, asset: object }>} urlsWithAssets
+ * @returns {Record<string, object>}
+ */
+function urlsToAssets(urlsWithAssets) {
+  return urlsWithAssets.reduce((acc, {url, asset}) => {
+    acc[url] = asset;
+    return acc;
+  }, {});
+}
+
 module.exports = {
   matchRemoteResource,
   digest,
-  ensureWriteablePath
+  ensureWriteablePath,
+  urlsToAssets
 };

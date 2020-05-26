@@ -12,11 +12,20 @@ const cli = meow(
   Options
     --max-size, -m Maximum size of asset to be inlined (in bytes), default 20000 (20kb)
     --output, -o Define a different output directory, default is to write files in place
+    --css-max-size Maximum size of CSS asset to be inlined (in bytes), overwrites maxSize, defaults to maxSize value (20kb)
 
   Examples
-    $ inline-remote-assets dist/**/*.html
-    $ inline-remote-assets dist/**/*.html --max-size 75000
-    $ inline-remote-assets dist/**/*.html --output public
+    Inline CSS and JS for .html files in dist (write in place):
+    $ inline-remote-assets 'dist/**/*.html'
+
+    Set JS and CSS max size to inline to 75kb:
+    $ inline-remote-assets 'dist/**/*.html' --max-size 75000
+
+    Inline HTML files in dist and output to public
+    $ inline-remote-assets 'dist/**/*.html' --output public
+
+    Set JS max size to inline 75kb and CSS max size to inline to 100kb.
+    $ inline-remote-assets 'dist/**/*.html' --max-size 75000 --css-max-size 100000
   `,
   {
     flags: {
@@ -28,6 +37,9 @@ const cli = meow(
         type: 'number',
         default: 20000, // 20kb
         alias: 'm'
+      },
+      cssMaxSize: {
+        type: 'number'
       }
     }
   }
