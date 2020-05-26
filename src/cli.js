@@ -11,19 +11,19 @@ const cli = meow(
 
   Options
     --max-size, -m Maximum size of asset to be inlined (in bytes), default 20000 (20kb)
+    --output, -o Define a different output directory, default is to write files in place
 
   Examples
     $ inline-remote-assets dist/**/*.html
     $ inline-remote-assets dist/**/*.html --max-size 75000
+    $ inline-remote-assets dist/**/*.html --output public
   `,
-  // @todo: add support
-  // --output, -o Define a different output directory (defaults to overwriting files)
   {
     flags: {
-      // Output: {
-      //   type: 'string',
-      //   alias: 'o'
-      // },
+      output: {
+        type: 'string',
+        alias: 'o'
+      },
       maxSize: {
         type: 'number',
         default: 20000, // 20kb

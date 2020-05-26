@@ -17,7 +17,6 @@ function matchRemoteSrc(tag) {
  * @param {string} html - HTML document string
  * @param {object} options
  * @param {number} options.maxSize - Maximum size of asset to be inlined (in bytes)
- * @param {string} [options.output]
  * @returns {Promise<string>}
  */
 
