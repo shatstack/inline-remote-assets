@@ -95,7 +95,7 @@ Example output HTML file (after `npx inline-remote-assets dist/*.html`). We've s
 > Equivalent `npm run <script>` should also work
 
 - `yarn test` run tests with [ava](https://github.com/avajs/ava).
-- `yarn build` will run JSDoc -> TypeScript typing conversion with [jsdoc](https://github.com/jsdoc/jsdoc) and [tsd-jsdoc](https://github.com/englercj/tsd-jsdoc), changes to [./types.d.ts](./types.d.ts) shoud be committed.
+- `yarn build` will run JSDoc -> TypeScript typing conversion with [jsdoc](https://github.com/jsdoc/jsdoc) and [tsd-jsdoc](https://github.com/englercj/tsd-jsdoc), changes to [./types.d.ts](./types.d.ts) should be committed.
 - `yarn lint` will lint all of the files with [xo](https://github.com/xojs/xo)
 - `yarn format` will run lint with `--fix` option on all the examples files (and tests).
 
