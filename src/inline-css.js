@@ -27,9 +27,15 @@ async function purgeStyles(html, styleSheetContents) {
   const cachedPurgedAssets = [];
   const assetsToPurge = [];
 
+  /**
+   * @param {string} url - URL of the stylesheet being digested
+   * @returns {string}
+   */
+  const getStyleDigest = (url) => `${htmlDigest}${digest(url)}`;
+
   // Get cached assets
   for await (const {url, asset} of styleSheetContents) {
-    const cached = await cache.get(`${htmlDigest}${digest(url)}`);
+    const cached = await cache.get(getStyleDigest(url));
     if (cached) {
       cachedPurgedAssets.push({
         url,
@@ -70,7 +76,7 @@ async function purgeStyles(html, styleSheetContents) {
   purgedAssets = await Promise.all(
     purgedAssets.map(async ({url, asset}) => {
       const {size} = await cache.set(
-        `${htmlDigest}${digest(url)}`,
+        getStyleDigest(url),
         asset.value
       );
       return {
