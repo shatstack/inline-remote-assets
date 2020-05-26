@@ -1,3 +1,7 @@
+const fs = require('fs').promises;
+const path = require('path');
+const crypto = require('crypto');
+
 /**
  *
  * @param {string} tag
@@ -12,8 +16,14 @@ function matchRemoteResource(tag, resourceLocationRegex) {
   return location.startsWith('http') ? location : null;
 }
 
-const fs = require('fs').promises;
-const path = require('path');
+/**
+ *
+ * @param {string} string - string to digest
+ * @returns {string}
+ */
+function digest(string) {
+  return crypto.createHash('sha256').update(string).digest('hex');
+}
 
 /**
  * @param {string} p - Path to check
@@ -37,5 +47,6 @@ async function ensureWriteablePath(filePath) {
 
 module.exports = {
   matchRemoteResource,
+  digest,
   ensureWriteablePath
 };
