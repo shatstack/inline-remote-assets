@@ -75,10 +75,7 @@ async function purgeStyles(html, styleSheetContents) {
   // Go through again to cache our output & populate `size`.
   purgedAssets = await Promise.all(
     purgedAssets.map(async ({url, asset}) => {
-      const {size} = await cache.set(
-        getStyleDigest(url),
-        asset.value
-      );
+      const {size} = await cache.set(getStyleDigest(url), asset.value);
       return {
         url,
         asset: {
