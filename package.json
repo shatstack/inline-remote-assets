@@ -1,6 +1,6 @@
 {
   "name": "inline-remote-assets",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Improve load performance by inlining and optimising remote assets loaded through CDN",
   "main": "src/main.js",
   "types": "./types.d.ts",
