@@ -10,6 +10,8 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
+    env:
+      CI: true
 
     steps:
     - uses: actions/checkout@v1
@@ -17,11 +19,21 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Cache multiple paths
+      uses: actions/cache@v2
+      with:
+        path: |
+          ./node_modules
+        key: ${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('./yarn.lock') }}
     - name: yarn install, lint, and test
+      run: yarn
+    - name: sanity check
+      run: yarn example
+    - name: lint
+      run: yarn lint
+    - name: tests uncached
       run: |
-        yarn
-        yarn example
-        yarn lint
+        rm -rf node_modules/.cache
         yarn test
-      env:
-        CI: true
+    - name: tests cached
+      run: yarn test
