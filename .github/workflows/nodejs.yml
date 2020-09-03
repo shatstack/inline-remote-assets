@@ -25,15 +25,15 @@ jobs:
         path: |
           ./node_modules
         key: ${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('./yarn.lock') }}
-    - name: yarn install, lint, and test
+    - name: install dependencies
       run: yarn
     - name: sanity check
       run: yarn example
     - name: lint
       run: yarn lint
-    - name: tests uncached
+    - name: test (uncached)
       run: |
         rm -rf node_modules/.cache
         yarn test
-    - name: tests cached
+    - name: test (cached)
       run: yarn test
