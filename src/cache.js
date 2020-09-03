@@ -44,7 +44,7 @@ const cache = {
           size,
           value
         };
-      } catch (_) {
+      } catch {
         // No cache for resource, init the directory, if it doesn't exist
         fs.mkdir(cachePath).catch(() => {});
       }
