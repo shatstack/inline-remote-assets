@@ -50,10 +50,11 @@ async function ensureWriteablePath(filePath) {
  * @returns {Record<string, object>}
  */
 function urlsToAssets(urlsWithAssets) {
-  return urlsWithAssets.reduce((acc, {url, asset}) => {
-    acc[url] = asset;
-    return acc;
-  }, {});
+  const urlToAssets = {};
+  urlsWithAssets.forEach(({url, asset}) => {
+    urlToAssets[url] = asset;
+  });
+  return urlToAssets;
 }
 
 module.exports = {
