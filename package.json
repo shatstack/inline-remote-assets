@@ -6,7 +6,7 @@
   "types": "./types.d.ts",
   "bin": "./src/cli.js",
   "scripts": {
-    "test": "ava",
+    "test": "uvu tests",
     "build": "jsdoc -t node_modules/tsd-jsdoc/dist -r src -d .",
     "lint": "xo src tests",
     "format": "xo src tests --fix",
@@ -23,10 +23,10 @@
     "tiny-glob": "^0.2.6"
   },
   "devDependencies": {
-    "ava": "^3.8.2",
     "jsdoc": "^3.6.4",
     "np": "^6.2.3",
     "tsd-jsdoc": "^2.5.0",
+    "uvu": "^0.3.3",
     "xo": "^0.30.0"
   },
   "xo": {
