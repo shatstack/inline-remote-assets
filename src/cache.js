@@ -3,7 +3,7 @@ const pkg = require('../package.json');
 const path = require('path');
 const findCacheDir = require('find-cache-dir');
 
-const cachePath = findCacheDir({name: pkg.name});
+const cachePath = findCacheDir({name: pkg.name, create: true});
 const inMemory = new Map();
 
 /**
