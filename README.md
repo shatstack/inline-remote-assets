@@ -15,15 +15,21 @@ If you have a directory of HTML files at `dist` you can purge/inline the CSS and
 npx inline-remote-assets 'dist/**/*.html'
 ```
 
-Example input HTML file:
+Example input HTML file with Tailwind, Tailwind Typography, Alpine.js, styleNames and Spruce:
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@1.x.x/dist/tailwind.min.css"
       rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.2.x/dist/typography.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/@shat/stylenames@v1.x.x/lib/index.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/ryangjchandler/spruce@0.x.x/dist/spruce.umd.js"></script>
@@ -41,6 +47,9 @@ Example input HTML file:
         Random application
       </a>
     </header>
+    <div class="prose">
+      <p>With Tailwind typography plugin from CDN</p>
+    </div>
   </body>
 </html>
 ```
