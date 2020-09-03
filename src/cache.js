@@ -1,7 +1,9 @@
 const fs = require('fs').promises;
+const pkg = require('../package.json');
 const path = require('path');
+const findCacheDir = require('find-cache-dir');
 
-const cachePath = '.remote-asset-cache';
+const cachePath = findCacheDir({name: pkg.name});
 const inMemory = new Map();
 
 /**
