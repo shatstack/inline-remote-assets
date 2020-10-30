@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "find-cache-dir": "^3.3.1",
-    "meow": "^7.0.1",
+    "meow": "^8.0.0",
     "node-fetch": "^2.6.0",
     "purgecss": "^3.0.0",
     "tiny-glob": "^0.2.6"
